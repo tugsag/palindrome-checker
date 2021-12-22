@@ -122,14 +122,36 @@ vector<char> gen_str(int n){
 }
 
 int license(int epochs, int runs){
-    // XXX 0000
+    // possible formats for IL: XXX 0000, XX 00000, 000 0000, X00 0000, 000 000
     cout << "\n" << "---------License Sim---------" << "\n";
+    int x, y; // x letters, y numbers
     vector<double> res(epochs);
     for(int e = 0; e < epochs; e++){
         int run_sum = 0;
         for(int r = 0; r < runs; r++){
-            int npc = check_pal_char(gen_str(3));
-            int npi = check_pal(gen_arr(4));
+            int li = rand() % 5;
+            int npc = 0;
+            switch(li){
+                case 0:
+                    x = 3, y = 4;
+                    break;
+                case 1:
+                    x = 2, y = 5;
+                    break;
+                case 2:
+                    x = 0, y = 7;
+                    break;
+                case 3:
+                    x = 1, y = 6;
+                    break;
+                case 4:
+                    x = 0, y = 6;
+                    break;
+            }
+            if(x > 0){
+                npc = check_pal_char(gen_str(x));
+            }
+            int npi = check_pal(gen_arr(y));
             run_sum += npc + npi;
         }
         res[e] = run_sum /(double) runs;
@@ -173,12 +195,21 @@ int str_exp(int epochs, int runs, int n){
     return 1;
 }
 
-int main(){
+int main(int argc, char *argv[]){
     srand(time(0));
     auto start = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     int epochs = 15;
     int runs = 200;
     int n = 250;
+    if(argc == 4){
+        epochs = atoi(argv[1]);
+        runs = atoi(argv[2]);
+        n = atoi(argv[3]);
+    }
+    else{
+        cout << "Values incomplete, using default vals " << "\n";
+    }
+    cout << "epochs: " << epochs << " runs: " << runs << " str length: " << n << "\n";
     // palindrome exps
     int l = license(epochs, runs);
     int s = str_exp(epochs, runs, n);
