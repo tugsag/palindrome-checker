@@ -1,14 +1,16 @@
-import string
-import random
 import matplotlib.pyplot as plt
 import time
+import numpy as np
+import string
+import random
 
 def check_palindrome(arr):
     n = len(arr)
-    dp = [[0 for x in range(n)] for y in range(n)]
-    p = [[False for x in range(n)] for y in range(n)]
-    for i in range(n):
-        p[i][i] = True
+    dp = np.zeros((n, n))
+    p = np.zeros((n, n), dtype=bool)
+    # for i in range(n):
+    #     p[i][i] = True
+    np.fill_diagonal(p, True)
     for i in range(n-1):
         if(arr[i] == arr[i+1]):
             p[i][i+1] = True
@@ -26,8 +28,7 @@ def check_palindrome(arr):
     return dp[0][n-1]
 
 def gen_arr(n):
-    rands = [random.randint(0, 9) for i in range(n)]
-    return rands
+    return np.random.randint(0, 10, n)
 
 def gen_str(n):
     ans = ''
@@ -37,22 +38,18 @@ def gen_str(n):
 
 
 def run_arr_exp(epochs, runs, n):
-    res = []
+    res = np.zeros((epochs, runs))
     for j in range(epochs):
-        ep = []
         for i in range(runs):
-            ep.append(check_palindrome(gen_arr(n)))
-        res.append(ep)
-    return [sum(x)/len(x) for x in res], [sorted(x)[runs//2] for x in res]
+            res[j][i] = check_palindrome(gen_arr(n))
+    return np.mean(res, axis=1), np.median(res, axis=1)
 
 def run_str_exp(epochs, runs, n):
-    res = []
+    res = np.zeros((epochs, runs))
     for j in range(epochs):
-        ep = []
         for i in range(runs):
-            ep.append(check_palindrome(gen_str(n)))
-        res.append(ep)
-    return [sum(x)/len(x) for x in res], [sorted(x)[runs//2] for x in res]
+            res[j][i] = check_palindrome(gen_str(n))
+    return np.mean(res, axis=1), np.median(res, axis=1)
 
 def show(mean, med):
     plt.plot(mean)

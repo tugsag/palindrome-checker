@@ -1,3 +1,3 @@
-Very simple program to count number of palindromes in randomized strings of ints and chars. Mainly used to compare loop efficiencies vs. Python. All files are included to compare. Python version needs **numpy** and **matplotlib**, C++, C#, Java versions need no special requirements.
+Very simple program to count number of palindromes in randomized strings of ints and chars. Mainly used to compare loop efficiencies vs. Python. All files are included to compare. C++, C#, Java versions need no special requirements, pure Python version (**check.py**) requires **matplotlib**, numpy optimized Python version (**numpy_check.py**) requires latest **numpy** version as well.
 
 C++ version also randomizes various license plate formats common in the US and checks for palindromes within. Input epoch, run, and string length values in command line for C++, otherwise leave blank to use default values. 
